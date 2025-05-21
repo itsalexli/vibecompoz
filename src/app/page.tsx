@@ -1,11 +1,21 @@
+// page.tsx
+"use client";
+
+import { useState } from "react";
 import Sheet from "./sheet";
-import InputButton from "./chatbot";
+import Chatbot from "./chatbot";
 
 export default function Home() {
+  // CHANGED: lift answer state into Home
+  const [latestAnswer, setLatestAnswer] = useState<string>("");
+
   return (
     <div className="flex flex-row gap-6 p-6">
-      <Sheet />
-      <InputButton />
+      {/* CHANGED: pass latestAnswer down to Sheet */}
+      <Sheet answer={latestAnswer} />
+
+      {/* CHANGED: pass setter down to Chatbot as onAnswer */}
+      <Chatbot onAnswer={setLatestAnswer} />
     </div>
   );
 }
