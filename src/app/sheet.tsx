@@ -1,17 +1,19 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-
-const abc = `X:1
-T:Simple Tune
-M:4/4
-L:1/8
-K:C
-E D C D | E E E2 | D D D2 | E G G2 |
-E D C D | E E E E | D D E D | C2 z2 |`;
+import { useEffect, useRef, useState } from "react";
 
 export default function Sheet() {
   const paper = useRef<HTMLDivElement | null>(null);
+
+  const [abc, setAbc] = useState<string>(`X:1
+T:Mary Had a Little Lamb
+M:4/4
+L:1/4
+K:C
+E D C D | E E E2 |
+D D D2 | E G G2 |
+E D C D | E E E E |
+D D E D | C4 |`);
 
   useEffect(() => {
     // load abcjs only in the browser
