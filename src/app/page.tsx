@@ -4,7 +4,6 @@
 import { useState } from "react";
 import Sheet from "./sheet";
 import Chatbot from "./chatbot";
-import XmlButton from "./xmlButton";
 
 export default function Home() {
   // CHANGED: lift answer state into Home

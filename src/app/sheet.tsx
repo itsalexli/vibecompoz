@@ -46,20 +46,20 @@ D D E D | C4 |`
   }, [answer]);
 
   return (
-    <div className="flex flex-col space-y-4">
-      <div>
-        <h2 className="text-white text-lg font-semibold mb-2">
-          🎼 ABC Quick Editor
-        </h2>
-        <div className="w-full h-9 overflow-auto bg-white border border-neutral-700 rounded-2xl p-4">
-          <div ref={paperRef} />
-        </div>
-        <textarea
-          className="w-full h-40 bg-neutral-800 text-white p-2 rounded-lg border border-neutral-700 focus:outline-none"
-          value={abc}
-          onChange={(e) => setAbc(e.target.value)}
-        />
+    <div className="flex flex-col bg-neutral-800 text-white p-4 rounded-lg border border-neutral-700">
+      <h2 className="text-xl font-semibold mb-3">🎼 ABC Quick Editor</h2>
+
+      {/* enlarged notation panel */}
+      <div className="w-220 h-96 overflow-auto bg-black border border-neutral-700 rounded-2xl p-2">
+        <div ref={paperRef} />
       </div>
+
+      {/* editor textarea */}
+      <textarea
+        className="w-full h-40 mt-4 bg-neutral-800 text-white p-2 rounded-lg border border-neutral-700 focus:outline-none"
+        value={abc}
+        onChange={(e) => setAbc(e.target.value)}
+      />
     </div>
   );
 }

@@ -64,7 +64,7 @@ Please:
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-neutral-900 border border-neutral-700 rounded-2xl shadow-lg space-y-4">
+    <div className="max-w-2xl mx-auto h-40 p-6 bg-neutral-900 border border-neutral-700 rounded-2xl shadow-lg space-y-4">
       <h2 className="text-lg font-semibold text-white">
         🎼 ABC Prompt Chatbot
       </h2>
@@ -83,12 +83,6 @@ Please:
           Submit
         </button>
       </div>
-
-      {response && (
-        <div className="bg-neutral-800 text-white p-4 rounded-lg border border-neutral-700 whitespace-pre-wrap max-h-64 overflow-auto">
-          {response}
-        </div>
-      )}
     </div>
   );
 };
