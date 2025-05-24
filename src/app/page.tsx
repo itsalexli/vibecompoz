@@ -4,6 +4,7 @@
 import { useState } from "react";
 import Sheet from "./sheet";
 import Chatbot from "./chatbot";
+import XmlButton from "./xmlButton";
 
 export default function Home() {
   // CHANGED: lift answer state into Home
@@ -16,6 +17,8 @@ export default function Home() {
 
       {/* CHANGED: pass setter down to Chatbot as onAnswer */}
       <Chatbot onAnswer={setLatestAnswer} />
+
+      <XmlButton />
     </div>
   );
 }
