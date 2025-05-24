@@ -64,10 +64,8 @@ Please:
   };
 
   return (
-    <div className="max-w-2xl mx-auto h-40 p-6 bg-neutral-900 border border-neutral-700 rounded-2xl shadow-lg space-y-4">
-      <h2 className="text-lg font-semibold text-white">
-        🎼 ABC Prompt Chatbot
-      </h2>
+    <div className="max-w-2xl mx-auto h-40 p-6 bg-neutral-900 border border-neutral-700 rounded-2xl shadow-lg space-y-4 mt-60 ml-0">
+      <h2 className="text-lg font-semibold text-white">🎼 ABC Agent</h2>
 
       <div className="flex items-center gap-2">
         <input
