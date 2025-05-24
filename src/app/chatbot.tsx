@@ -26,7 +26,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onAnswer }) => {
       const prompt = `
 You are an expert in ABC notation (abcjs).  
  
-Original abcjs string:
+Original abcjs string (If needed, you can refer to this. If not needed, ignore it):
 \`\`\`
 ${prevResponse.current}
 \`\`\`
@@ -55,6 +55,7 @@ Please:
       setResponse(ans);
       prevResponse.current = ans;
       onAnswer(ans);
+      console.log("Response:", ans);
       setInputValue("");
     } catch (err) {
       console.error("API Error:", err);
@@ -63,7 +64,7 @@ Please:
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-neutral-900 border border-neutral-700 rounded-2xl shadow-lg space-y-4">
+    <div className="max-w-2xl mx-auto p-6 bg-neutral-900 border border-neutral-700 rounded-2xl shadow-lg space-y-4">
       <h2 className="text-lg font-semibold text-white">
         🎼 ABC Prompt Chatbot
       </h2>

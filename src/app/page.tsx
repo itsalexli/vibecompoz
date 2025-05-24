@@ -17,8 +17,6 @@ export default function Home() {
 
       {/* CHANGED: pass setter down to Chatbot as onAnswer */}
       <Chatbot onAnswer={setLatestAnswer} />
-
-      <XmlButton />
     </div>
   );
 }

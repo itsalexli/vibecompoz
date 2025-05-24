@@ -2,62 +2,64 @@
 
 import { useEffect, useRef, useState } from "react";
 
-interface SheetProps {
-  answer: string;
-}
-
-export default function Sheet({ answer }: SheetProps) {
+export default function Sheet({ answer }: { answer?: string }) {
   const paperRef = useRef<HTMLDivElement | null>(null);
-
   const [abc, setAbc] = useState<string>(
-    `
-X:1
+    answer ||
+      `X:1
 T:Mary Had a Little Lamb
 M:4/4
 L:1/4
 K:C
 E D C D | E E E2 |
-D D D2 | E G G2 |
+D D D D | E G G2 |
 E D C D | E E E E |
-D D E D | C4 |
-`.trim()
+D D E D | C4 |`
   );
+  const [ABCJS, setABCJS] = useState<any>(null);
 
-  // render helper with clickListener
-  const draw = (str: string) => {
-    import("abcjs").then(({ default: abcjs }) => {
-      if (!paperRef.current) return;
-
-      abcjs.renderAbc(paperRef.current, str, {
-        responsive: "resize",
-        clickListener: (_elem, tuneNumber, classes, analysisEvent) => {
-          console.log("Clicked note data:", analysisEvent);
-        },
-      });
-    });
-  };
-
-  // initial draw
+  // Load abcjs library on client
   useEffect(() => {
-    draw(abc);
+    import("abcjs").then((mod) => {
+      const lib = (mod as any).default ?? mod;
+      setABCJS(lib);
+    });
   }, []);
 
-  // update when answer changes
+  // Render on abc or library load
   useEffect(() => {
-    if (!answer) return;
-    setAbc(answer);
-    draw(answer);
+    if (!paperRef.current || !ABCJS) return;
+    paperRef.current.innerHTML = "";
+    ABCJS.renderAbc(paperRef.current, abc, {
+      responsive: "resize",
+      add_classes: true,
+      scale: 1.8, // increase size of notation
+      clickListener: (_el: any, tuneNum: any, classes: any, analysis: any) => {
+        console.log("Clicked note:", analysis);
+      },
+    });
+  }, [abc, ABCJS]);
+
+  // Sync external answer prop
+  useEffect(() => {
+    if (answer) setAbc(answer);
   }, [answer]);
 
   return (
-    <div className="w-full max-w-4xl h-[32rem] mx-auto bg-neutral-900 border border-neutral-700 rounded-2xl shadow-lg p-6 overflow-auto">
-      <h2 className="text-white text-lg font-semibold mb-4">
-        🎼 Sheet Preview
-      </h2>
-      <div
-        ref={paperRef}
-        className="bg-white p-4 rounded-lg w-full shadow-inner border border-neutral-300 mb-8"
-      />
+    <div className="flex flex-col space-y-4">
+      <div>
+        <h2 className="text-white text-lg font-semibold mb-2">
+          🎼 ABC Quick Editor
+        </h2>
+        <div className="w-full h-9 overflow-auto bg-white border border-neutral-700 rounded-2xl p-4">
+          <div ref={paperRef} />
+        </div>
+        <textarea
+          className="w-full h-40 bg-neutral-800 text-white p-2 rounded-lg border border-neutral-700 focus:outline-none"
+          value={abc}
+          onChange={(e) => setAbc(e.target.value)}
+        />
+      </div>
     </div>
   );
 }
