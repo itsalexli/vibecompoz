@@ -23,15 +23,14 @@ E D E D | E E E E |
 D D E D | C4 |`;
 
 export default function Sheet({ answer, exportRef }: SheetProps) {
-  // Use defaultABC unless a non-empty answer is provided
   const [abc, setAbc] = useState<string>(
     answer && answer.trim().length > 0 ? answer : defaultABC
   );
   const controlsRef = useRef<HTMLDivElement | null>(null);
 
-  // Sync external answer prop: only update when it's non-empty
+  // Sync external answer prop to local state
   useEffect(() => {
-    if (answer !== undefined && answer.trim().length > 0) {
+    if (answer && answer.trim().length > 0) {
       setAbc(answer);
     }
   }, [answer]);
@@ -39,6 +38,8 @@ export default function Sheet({ answer, exportRef }: SheetProps) {
   // Render notation & initialize audio controls
   useEffect(() => {
     if (!exportRef.current) return;
+
+    // Render ABC notation
     exportRef.current.innerHTML = "";
     const visualObj = ABCJS.renderAbc(exportRef.current, abc, {
       responsive: "resize",
@@ -47,6 +48,7 @@ export default function Sheet({ answer, exportRef }: SheetProps) {
       add_classes: true,
     })[0];
 
+    // Initialize audio synth controls
     if (controlsRef.current && ABCJS.synth && ABCJS.synth.SynthController) {
       const synthControl = new ABCJS.synth.SynthController();
       synthControl.load(controlsRef.current, /* cursorControl= */ null, {
@@ -65,8 +67,8 @@ export default function Sheet({ answer, exportRef }: SheetProps) {
 
       {/* notation canvas */}
       <div
+        className="w-full h-full overflow-auto bg-gray-50 text-neutral-800 border border-neutral-700 rounded-2xl p-2 "
         ref={exportRef}
-        className="w-full h-96 overflow-auto bg-gray-50 text-neutral-800 border border-neutral-700 rounded-2xl p-2"
       />
 
       {/* audio controls */}
