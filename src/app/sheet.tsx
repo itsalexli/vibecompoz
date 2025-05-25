@@ -23,20 +23,22 @@ E D E D | E E E E |
 D D E D | C4 |`;
 
 export default function Sheet({ answer, exportRef }: SheetProps) {
-  const [abc, setAbc] = useState<string>(answer ?? defaultABC);
+  // Use defaultABC unless a non-empty answer is provided
+  const [abc, setAbc] = useState<string>(
+    answer && answer.trim().length > 0 ? answer : defaultABC
+  );
   const controlsRef = useRef<HTMLDivElement | null>(null);
 
-  // 1. Sync external answer prop to local state
+  // Sync external answer prop: only update when it's non-empty
   useEffect(() => {
-    if (answer !== undefined) {
+    if (answer !== undefined && answer.trim().length > 0) {
       setAbc(answer);
     }
   }, [answer]);
 
-  // 2. Render notation & initialize audio controls
+  // Render notation & initialize audio controls
   useEffect(() => {
     if (!exportRef.current) return;
-    // Render ABC notation
     exportRef.current.innerHTML = "";
     const visualObj = ABCJS.renderAbc(exportRef.current, abc, {
       responsive: "resize",
@@ -45,7 +47,6 @@ export default function Sheet({ answer, exportRef }: SheetProps) {
       add_classes: true,
     })[0];
 
-    // Initialize audio synth controls
     if (controlsRef.current && ABCJS.synth && ABCJS.synth.SynthController) {
       const synthControl = new ABCJS.synth.SynthController();
       synthControl.load(controlsRef.current, /* cursorControl= */ null, {
