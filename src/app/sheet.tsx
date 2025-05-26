@@ -65,11 +65,13 @@ export default function Sheet({ answer, exportRef }: SheetProps) {
     <div className="flex flex-col w-250 bg-neutral-800 text-white mt-10 p-4 rounded-lg border ml-20 border-neutral-700">
       <h2 className="text-xl font-semibold mb-3">🎼 Preview</h2>
 
-      {/* notation canvas */}
-      <div
-        className="w-full h-full overflow-auto bg-gray-50 text-neutral-800 border border-neutral-700 rounded-2xl p-2 "
-        ref={exportRef}
-      />
+      {/* notation canvas - fixed height with scroll */}
+      <div className="w-full h-92 bg-gray-50 border border-neutral-700 rounded-2xl overflow-auto">
+        <div
+          className="w-full h-full overflow-auto p-2 text-neutral-800"
+          ref={exportRef}
+        />
+      </div>
 
       {/* audio controls */}
       <div
