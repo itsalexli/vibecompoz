@@ -32,19 +32,21 @@ export default function Home() {
       <h3 className="text-lg font-semibold mb-4 text-white">✏️ ABC Editor</h3>
 
       <div className="flex flex-row gap-6 items-start">
-        {/* Left column: Editor, Chatbot, PDF button */}
+        {/* Left column: Editor + Chatbot */}
         <div className="flex flex-col gap-4 w-full max-w-xl">
           <ABCEditor value={abc} onChange={setAbc} className="w-full" />
           <Chatbot onAnswer={setLatestAnswer} />
         </div>
 
-        {/* Right column: Sheet Preview */}
+        {/* Right column: Sheet + Centered PDF Button */}
         <div className="flex-grow">
           <Sheet exportRef={svgContainerRef} abc={abc} />
-          <ExportPDFButton
-            targetRef={svgContainerRef}
-            fileName="abc-score.pdf"
-          />
+          <div className="flex justify-center mt-4">
+            <ExportPDFButton
+              targetRef={svgContainerRef}
+              fileName="abc-score.pdf"
+            />
+          </div>
         </div>
       </div>
     </div>

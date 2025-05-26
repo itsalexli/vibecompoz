@@ -56,7 +56,7 @@ export default function Sheet({ abc, exportRef }: SheetProps) {
       <h2 className="text-xl font-semibold mb-3">🎼 Preview</h2>
 
       {/* notation canvas - fixed height with scroll */}
-      <div className="w-full h-92 bg-gray-50 border border-neutral-700 rounded-2xl overflow-auto">
+      <div className="w-full h-125 bg-gray-50 border border-neutral-700 rounded-2xl overflow-auto">
         <div
           className="w-full h-full overflow-auto p-2 text-neutral-800"
           ref={exportRef}

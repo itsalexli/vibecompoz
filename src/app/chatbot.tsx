@@ -78,7 +78,7 @@ Please:
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 mt-0 rounded-lg transition"
           onClick={handleClick}
         >
-          Submit
+          Compose
         </button>
       </div>
     </div>
