@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import type { RefObject } from "react";
 import ABCJS from "abcjs";
 // Audio control styles
 import "abcjs/abcjs-audio.css";
 
 interface SheetProps {
-  answer?: string;
+  abc: string;
   /** Ref to the <div> where abcjs will render the SVG */
   exportRef: RefObject<HTMLDivElement | null>;
 }
@@ -22,18 +22,8 @@ D D D D | E G G2 |
 E D E D | E E E E |
 D D E D | C4 |`;
 
-export default function Sheet({ answer, exportRef }: SheetProps) {
-  const [abc, setAbc] = useState<string>(
-    answer && answer.trim().length > 0 ? answer : defaultABC
-  );
+export default function Sheet({ abc, exportRef }: SheetProps) {
   const controlsRef = useRef<HTMLDivElement | null>(null);
-
-  // Sync external answer prop to local state
-  useEffect(() => {
-    if (answer && answer.trim().length > 0) {
-      setAbc(answer);
-    }
-  }, [answer]);
 
   // Render notation & initialize audio controls
   useEffect(() => {
@@ -62,7 +52,7 @@ export default function Sheet({ answer, exportRef }: SheetProps) {
   }, [abc, exportRef]);
 
   return (
-    <div className="flex flex-col w-250 bg-neutral-800 text-white mt-10 p-4 rounded-lg border ml-20 border-neutral-700">
+    <div className="flex flex-col w-250 bg-neutral-800 text-white p-4 rounded-lg border m-0 border-neutral-700">
       <h2 className="text-xl font-semibold mb-3">🎼 Preview</h2>
 
       {/* notation canvas - fixed height with scroll */}
@@ -76,14 +66,7 @@ export default function Sheet({ answer, exportRef }: SheetProps) {
       {/* audio controls */}
       <div
         ref={controlsRef}
-        className="w-full flex items-center justify-start mt-4 mb-4"
-      />
-
-      {/* ABC editor */}
-      <textarea
-        className="w-full h-40 bg-neutral-800 text-white p-2 rounded-lg border border-neutral-700 focus:outline-none resize-none"
-        value={abc}
-        onChange={(e) => setAbc(e.target.value)}
+        className="w-full flex items-center justify-start mt-4"
       />
     </div>
   );

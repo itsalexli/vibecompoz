@@ -64,7 +64,7 @@ Please:
   };
 
   return (
-    <div className="max-w-2xl mx-auto h-40 p-6 bg-neutral-900 border border-neutral-700 rounded-2xl shadow-lg space-y-4 mt-60 ml-0">
+    <div className="w-144 mx-auto h-40 p-6 bg-neutral-900 border border-neutral-700 rounded-2xl shadow-lg space-y-4 mt-0 ml-0">
       <h2 className="text-lg font-semibold text-white">🎼 ABC Agent</h2>
 
       <div className="flex items-center gap-2">
@@ -75,7 +75,7 @@ Please:
           placeholder="Enter your prompt…"
         />
         <button
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 mt-0 rounded-lg transition"
           onClick={handleClick}
         >
           Submit
