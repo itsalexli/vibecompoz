@@ -12,7 +12,7 @@ interface ExportPDFButtonProps {
 
 export default function ExportPDFButton({
   targetRef,
-  fileName = "abc-score.pdf",
+  fileName = "newscore.pdf",
 }: ExportPDFButtonProps) {
   const handleExport = () => {
     const svgContainer = targetRef.current;
