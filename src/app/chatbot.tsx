@@ -26,7 +26,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onAnswer }) => {
       const prompt = `
 You are an expert in ABC notation (abcjs).  
  
-Original abcjs string (If needed, you can refer to this. If not needed, ignore it):
+Original abcjs (If needed, you can refer to this. If not needed, ignore it):
 \`\`\`
 ${prevResponse.current}
 \`\`\`
@@ -39,6 +39,7 @@ Please:
 2. Add or update the title line (T:) to match the piece name.  
 3. Wrap at most 8 bars per line.  
 4. Ensure the syntax is valid for abcjs rendering.
+5. Don't show extra string quotes
 `;
       const completion = await openai.chat.completions.create({
         model: "deepseek-chat",

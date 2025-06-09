@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "prismjs/themes/prism-tomorrow.css"; /* ← Prism theme */
 
 :root {
   --background: #ffffff;

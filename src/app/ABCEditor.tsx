@@ -1,8 +1,6 @@
-import React from "react";
-import Editor from "react-simple-code-editor";
-import Prism from "prismjs";
-import "prismjs/components/prism-markup.js";
-import "prismjs/themes/prism-tomorrow.css";
+"use client";
+
+import React, { useRef, useEffect, useCallback } from "react";
 
 interface ABCEditorProps {
   value: string;
@@ -10,38 +8,128 @@ interface ABCEditorProps {
   className?: string;
 }
 
-// Changed: define a tiny “abc” language that highlights letters A–G
-Prism.languages.abc = Prism.languages.extend("markup", {});
-Prism.languages.insertBefore("abc", "punctuation", {
-  note: {
-    pattern: /\b[ABCDEFG]\b/g,
-    alias: "keyword", // uses Prism’s `.token.keyword` styling
-  },
-});
-
-// Changed: highlight fn used by react-simple-code-editor
-function highlight(code: string): string {
-  return Prism.highlight(code, Prism.languages.abc, "abc");
-}
+// map each note to a hex colour
+const noteColors: Record<string, string> = {
+  "|": "#56b6c2",
+  A: "#98c379",
+  B: "#98c379",
+  C: "#98c379",
+  D: "#98c379",
+  E: "#98c379",
+  F: "#98c379",
+  G: "#98c379",
+};
 
 export default function ABCEditor({
   value,
   onChange,
   className = "",
 }: ABCEditorProps) {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const highlightRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const syncScroll = useCallback(() => {
+    if (textareaRef.current && highlightRef.current) {
+      const { scrollTop, scrollLeft } = textareaRef.current;
+      highlightRef.current.scrollTop = scrollTop;
+      highlightRef.current.scrollLeft = scrollLeft;
+    }
+  }, []);
+
+  const renderHighlightedContent = useCallback(() => {
+    const lines = value.split("\n");
+
+    return lines
+      .map((line, lineIndex) => {
+        // Only apply highlighting after the 5th line (index 4)
+        if (lineIndex >= 5) {
+          return line
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .split("")
+            .map((char) => {
+              const color = noteColors[char as keyof typeof noteColors];
+              if (color) {
+                return `<span style="color: ${color}; font-weight: bold;">${char}</span>`;
+              }
+              return char;
+            })
+            .join("");
+        } else {
+          // For lines 1-5, just escape HTML entities but don't highlight
+          return line
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+        }
+      })
+      .join("\n");
+  }, [value]);
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.addEventListener("scroll", syncScroll, { passive: true });
+      textarea.addEventListener("input", syncScroll, { passive: true });
+      return () => {
+        textarea.removeEventListener("scroll", syncScroll);
+        textarea.removeEventListener("input", syncScroll);
+      };
+    }
+  }, [syncScroll]);
+
+  // Sync scroll on value changes
+  useEffect(() => {
+    syncScroll();
+  }, [value, syncScroll]);
+
   return (
-    // Changed: swapped <textarea> for <Editor>, wired up highlight & onValueChange
-    <Editor
-      value={value}
-      onValueChange={onChange} // Changed: different prop name
-      highlight={highlight} // Added: our Prism-based highlighter
-      padding={10} // Added: internal padding prop
-      textareaId="abc-editor" // Optional: for testing or styling
-      className={`
-        w-1/2 h-130 bg-neutral-800 text-white p-2 rounded-lg
-        border border-neutral-700 focus:outline-none overflow-auto
-        ${className}           // Changed: added monospaced font
-      `}
-    />
+    <div
+      ref={containerRef}
+      className="w-full h-[500px] bg-neutral-800 text-white rounded-lg border border-neutral-700 relative font-mono"
+    >
+      {/* Highlighted background layer */}
+      <div
+        ref={highlightRef}
+        className="absolute inset-0 overflow-hidden pointer-events-none"
+        style={{
+          padding: "10px",
+          margin: 0,
+          border: "none",
+          fontFamily: "inherit",
+          fontSize: "14px",
+          lineHeight: "1.5",
+          whiteSpace: "pre-wrap",
+          wordWrap: "break-word",
+          color: "#ffffff",
+        }}
+        dangerouslySetInnerHTML={{
+          __html: renderHighlightedContent(),
+        }}
+      />
+
+      {/* Input textarea */}
+      <textarea
+        ref={textareaRef}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={`absolute inset-0 w-full h-full bg-transparent text-transparent caret-white resize-none border-none outline-none overflow-auto ${className}`}
+        style={{
+          padding: "10px",
+          margin: 0,
+          fontFamily: "inherit",
+          fontSize: "14px",
+          lineHeight: "1.5",
+          whiteSpace: "pre-wrap",
+          wordWrap: "break-word",
+        }}
+        spellCheck={false}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+      />
+    </div>
   );
 }
