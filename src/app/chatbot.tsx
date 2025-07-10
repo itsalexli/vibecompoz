@@ -6,7 +6,7 @@ import OpenAI from "openai";
 // DeepSeek API initialization
 const openai = new OpenAI({
   baseURL: "https://api.deepseek.com",
-  apiKey: "sk-21f6ba853df84334b8cbda1d1d2cc3f8",
+  apiKey: process.env.APIKEY,
   dangerouslyAllowBrowser: true,
 });
 
