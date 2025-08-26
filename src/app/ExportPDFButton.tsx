@@ -59,7 +59,7 @@ export default function ExportPDFButton({
   return (
     <button
       onClick={handleExport}
-      className="m-0 w-50 self-start bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+      className="m-0 w-50 self-start bg-gradient-to-r from-gray-900 to-black hover:from-gray-800 hover:to-gray-900 active:scale-95 text-white px-6 py-3 font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center gap-2 justify-center"
     >
       Export PDF
     </button>

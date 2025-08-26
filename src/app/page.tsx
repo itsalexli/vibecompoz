@@ -28,8 +28,10 @@ export default function Home() {
   }, [latestAnswer]);
 
   return (
-    <div className="p-6 space-y-4">
-      <h3 className="text-lg font-semibold mb-4 text-white">✏️ ABC Editor</h3>
+    <div className="p-6 space-y-6 min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800">
+      <h1 className="text-3xl font-bold mb-6 tracking-tight bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+        ✏️ ABC Notation Editor
+      </h1>
 
       <div className="flex flex-row gap-6 items-start">
         {/* Left column: Editor + Chatbot */}

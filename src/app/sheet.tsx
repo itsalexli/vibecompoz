@@ -38,6 +38,33 @@ export default function Sheet({ abc, exportRef }: SheetProps) {
       add_classes: true,
     })[0];
 
+    // Force SVG elements to be black
+    const svgElement = exportRef.current.querySelector("svg");
+    if (svgElement) {
+      // Make text elements black (fill only)
+      const textElements = svgElement.querySelectorAll("text");
+      textElements.forEach((element) => {
+        (element as SVGElement).style.fill = "#000000";
+        (element as SVGElement).style.stroke = "none";
+      });
+
+      // Make line elements black (stroke only)
+      const lineElements = svgElement.querySelectorAll("line, path[stroke]");
+      lineElements.forEach((element) => {
+        (element as SVGElement).style.stroke = "#000000";
+        (element as SVGElement).style.fill = "none";
+      });
+
+      // Make filled shapes black (fill only)
+      const filledElements = svgElement.querySelectorAll(
+        "path:not([stroke]), circle, rect"
+      );
+      filledElements.forEach((element) => {
+        (element as SVGElement).style.fill = "#000000";
+        (element as SVGElement).style.stroke = "none";
+      });
+    }
+
     // Initialize audio synth controls
     if (controlsRef.current && ABCJS.synth && ABCJS.synth.SynthController) {
       const synthControl = new ABCJS.synth.SynthController();
@@ -52,15 +79,12 @@ export default function Sheet({ abc, exportRef }: SheetProps) {
   }, [abc, exportRef]);
 
   return (
-    <div className="flex flex-col w-250 bg-neutral-800 text-white p-4 rounded-lg border m-0 border-neutral-700">
-      <h2 className="text-xl font-semibold mb-3">🎼 Preview</h2>
+    <div className="flex flex-col w-250 bg-gradient-to-br from-slate-900 to-slate-800 text-white p-6 rounded-xl border border-slate-700/50 m-0 shadow-2xl backdrop-blur-sm">
+      <h2 className="text-xl font-bold mb-4 tracking-tight">🎼 Preview</h2>
 
       {/* notation canvas - fixed height with scroll */}
-      <div className="w-full h-125 bg-gray-50 border border-neutral-700 rounded-2xl overflow-auto">
-        <div
-          className="w-full h-full overflow-auto p-2 text-neutral-800"
-          ref={exportRef}
-        />
+      <div className="w-full h-125 bg-white border border-slate-600/50 rounded-xl overflow-auto shadow-inner">
+        <div className="w-full h-full overflow-auto p-4" ref={exportRef} />
       </div>
 
       {/* audio controls */}

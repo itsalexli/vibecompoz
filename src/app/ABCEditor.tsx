@@ -88,19 +88,19 @@ export default function ABCEditor({
   return (
     <div
       ref={containerRef}
-      className="w-full h-[500px] bg-neutral-800 text-white rounded-lg border border-neutral-700 relative font-mono"
+      className="w-full h-[500px] bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-xl border border-slate-700/50 relative font-mono shadow-2xl overflow-hidden backdrop-blur-sm"
     >
       {/* Highlighted background layer */}
       <div
         ref={highlightRef}
         className="absolute inset-0 overflow-hidden pointer-events-none"
         style={{
-          padding: "10px",
+          padding: "12px",
           margin: 0,
           border: "none",
-          fontFamily: "inherit",
+          fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
           fontSize: "14px",
-          lineHeight: "1.5",
+          lineHeight: "1.6",
           whiteSpace: "pre-wrap",
           wordWrap: "break-word",
           color: "#ffffff",
@@ -115,13 +115,13 @@ export default function ABCEditor({
         ref={textareaRef}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={`absolute inset-0 w-full h-full bg-transparent text-transparent caret-white resize-none border-none outline-none overflow-auto ${className}`}
+        className={`absolute inset-0 w-full h-full bg-transparent text-transparent caret-indigo-400 resize-none border-none outline-none overflow-auto ${className} placeholder-slate-500`}
         style={{
-          padding: "10px",
+          padding: "12px",
           margin: 0,
-          fontFamily: "inherit",
+          fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
           fontSize: "14px",
-          lineHeight: "1.5",
+          lineHeight: "1.6",
           whiteSpace: "pre-wrap",
           wordWrap: "break-word",
         }}
@@ -129,6 +129,7 @@ export default function ABCEditor({
         autoComplete="off"
         autoCorrect="off"
         autoCapitalize="off"
+        placeholder="Enter your ABC notation here..."
       />
     </div>
   );

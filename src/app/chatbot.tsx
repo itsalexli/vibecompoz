@@ -6,7 +6,7 @@ import OpenAI from "openai";
 // DeepSeek API initialization
 const openai = new OpenAI({
   baseURL: "https://api.deepseek.com",
-  apiKey: process.env.APIKEY,
+  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY || "your-api-key-here",
   dangerouslyAllowBrowser: true,
 });
 
@@ -21,6 +21,14 @@ const Chatbot: React.FC<ChatbotProps> = ({ onAnswer }) => {
 
   const handleClick = async () => {
     if (!inputValue.trim()) return;
+
+    // Check if API key is available
+    if (!process.env.NEXT_PUBLIC_OPENAI_API_KEY) {
+      setResponse(
+        "Error: API key is not configured. Please check your environment variables."
+      );
+      return;
+    }
 
     try {
       const prompt = `
@@ -65,18 +73,20 @@ Please:
   };
 
   return (
-    <div className="w-144 mx-auto h-40 p-6 bg-neutral-900 border border-neutral-700 rounded-2xl shadow-lg space-y-4 mt-0 ml-0">
-      <h2 className="text-lg font-semibold text-white">🎼 ABC Agent</h2>
+    <div className="w-144 mx-auto h-40 p-6 bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700/50 rounded-2xl shadow-2xl space-y-4 mt-0 ml-0 backdrop-blur-sm">
+      <h2 className="text-xl font-bold text-white tracking-tight">
+        🎼 ABC Agent
+      </h2>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <input
-          className="flex-1 bg-neutral-800 text-white px-4 py-2 rounded-lg border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 bg-slate-800/80 text-white px-4 py-3 rounded-xl border border-slate-600/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 placeholder-slate-400 font-medium"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="Enter your prompt…"
         />
         <button
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 mt-0 rounded-lg transition"
+          className="bg-gradient-to-r from-gray-900 to-black hover:from-gray-800 hover:to-gray-900 active:scale-95 text-white px-6 py-3 font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center gap-2"
           onClick={handleClick}
         >
           Compose
